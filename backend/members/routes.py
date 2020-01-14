@@ -8,14 +8,9 @@ member_api = Blueprint('members', __name__)
 
 @member_api.route('/members')
 def member_view():
-    member_list = Member.query.all()
-    members = []
+    member_list = [member.serialize for member in Member.query.all()]
 
-    for member in member_list:
-        members.append({
-            'first_name': member.first_name,
-            'last_name': member.last_name})
-    return jsonify({'members': members})
+    return jsonify({'members': member_list})
 
 
 @member_api.route('/add_member', methods=['POST'])
