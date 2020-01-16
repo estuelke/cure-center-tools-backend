@@ -1,6 +1,6 @@
-from flask import Blueprint, jsonify, request
-from backend import db
-from backend.members.models import Member
+from flask import Blueprint, jsonify, request, make_response
+from .. import db
+from .models import Member
 
 
 member_api = Blueprint('members', __name__)
@@ -18,11 +18,11 @@ def add_member_view():
     member_data = request.get_json()
 
     new_member = Member(
-        first_name=member_data['first_name'],
-        last_name=member_data['last_name']
+        first_name=member_data['firstName'],
+        last_name=member_data['lastName']
     )
-
     db.session.add(new_member)
     db.session.commit()
 
-    return 'Done', 201
+    response = make_response()
+    return response
