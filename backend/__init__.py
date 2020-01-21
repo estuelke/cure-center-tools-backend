@@ -1,9 +1,11 @@
 from flask import Flask
 from flask_cors import CORS
+from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from config import Config
 
 db = SQLAlchemy()
+migrate = Migrate()
 
 
 def create_app(config_class=Config):
@@ -12,7 +14,9 @@ def create_app(config_class=Config):
     CORS(app, resources={r'*': {'origins': Config.FRONTEND}})
 
     db.init_app(app)
+    migrate.init_app(app, db)
 
+    # Routes/Blueprints
     from backend.members.routes import member_api
 
     app.register_blueprint(member_api)
