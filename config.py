@@ -12,3 +12,4 @@ class Config:
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'app.db')
     FRONTEND = os.getenv('FRONTEND')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SEED_FILE = os.environ.get('SEED_FILE')

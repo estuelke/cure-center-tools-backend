@@ -1,9 +1,9 @@
 import pandas as pd
 from alembic import op
 import sqlalchemy as sa
+from config import Config
 
-
-filename = 'C:/Users/erins/Programming/cure_center_projects/cure-center-flask-react/backend/backend/helpers/FlaskSeedDataFinal.xlsx'
+filename = Config.SEED_FILE
 
 columns = {
     'list_memberships': [
