@@ -1,8 +1,8 @@
-"""empty message
+"""Initial Migration with Seed Data
 
-Revision ID: b8cde0b43c16
+Revision ID: a32e1fc58470
 Revises: 
-Create Date: 2020-01-24 17:17:58.421159
+Create Date: 2020-01-29 11:35:20.453687
 
 """
 from alembic import op
@@ -11,7 +11,7 @@ from backend.helpers.import_seed_data import seed_data
 
 
 # revision identifiers, used by Alembic.
-revision = 'b8cde0b43c16'
+revision = 'a32e1fc58470'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -84,10 +84,10 @@ def upgrade():
     )
     op.create_table('position',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('member_id', sa.Integer(), nullable=False),
+    sa.Column('cure_center_profile_id', sa.Integer(), nullable=False),
     sa.Column('title', sa.String(length=50), nullable=False),
     sa.Column('department', sa.String(length=50), nullable=True),
-    sa.ForeignKeyConstraint(['member_id'], ['cure_center_profile.id'], ),
+    sa.ForeignKeyConstraint(['cure_center_profile_id'], ['cure_center_profile.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     # ### end Alembic commands ###

@@ -126,7 +126,7 @@ class PhoneNumber(db.Model):
 
 class Position(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    member_id = db.Column(
+    cure_center_profile_id = db.Column(
         db.Integer, db.ForeignKey('cure_center_profile.id'), nullable=False
     )
     title = db.Column(db.String(50), nullable=False)

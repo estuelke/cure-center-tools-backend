@@ -19,6 +19,7 @@ columns = {
         sa.sql.column('executive_assistant_id', sa.String)
     ],
     'cure_center_profile': [
+        sa.sql.column('id', sa.Integer),
         sa.sql.column('member_id', sa.Integer),
         sa.sql.column('nick_name', sa.String),
         sa.sql.column('suffix', sa.String),
@@ -51,7 +52,7 @@ columns = {
         sa.sql.column('phone_number', sa.String)
     ],
     'position': [
-        sa.sql.column('member_id', sa.Integer),
+        sa.sql.column('cure_center_profile_id', sa.Integer),
         sa.sql.column('title', sa.String),
         sa.sql.column('department', sa.String)
     ]
@@ -63,10 +64,13 @@ def seed_data():
     for name, table in tables.items():
         if name == 'cure_center_profile':
             table.drop(columns=['birthday'], inplace=True)
-        db_table = sa.sql.table(name, *columns[name])
-        table.fillna('', inplace=True)
-        data = table.to_dict('records')
-        op.bulk_insert(
-            db_table,
-            data
-        )
+        try:
+            db_table = sa.sql.table(name, *columns[name])
+            table.fillna('', inplace=True)
+            data = table.to_dict('records')
+            op.bulk_insert(
+                db_table,
+                data
+            )
+        except Exception as e:
+            print(f"Error found {e}: Sheet: {name}")
