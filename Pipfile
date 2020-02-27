@@ -11,6 +11,12 @@ autopep8 = "*"
 flask = "*"
 flask-sqlalchemy = "*"
 pandas = "*"
+python-dotenv = "*"
+flask-cors = "*"
+flask-migrate = "*"
+flask-script = "*"
+xlrd = "*"
+marshmallow = "*"
 
 [requires]
 python_version = "3.7"
