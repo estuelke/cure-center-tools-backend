@@ -15,3 +15,4 @@ class Config:
     MEMBER_SEED_FILE = os.environ.get('MEMBER_SEED_FILE')
     COMPOUND_SEED_FILE = os.environ.get('COMPOUND_SEED_FILE')
     FLASK_PORT = os.environ.get('FLASK_PORT', default=5000)
+    HOST = os.environ.get('HOST', default='127.0.0.1')
