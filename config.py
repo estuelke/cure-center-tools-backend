@@ -14,3 +14,4 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     MEMBER_SEED_FILE = os.environ.get('MEMBER_SEED_FILE')
     COMPOUND_SEED_FILE = os.environ.get('COMPOUND_SEED_FILE')
+    FLASK_PORT = os.environ.get('FLASK_PORT', default=5000)
