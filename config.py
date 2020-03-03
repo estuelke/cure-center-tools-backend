@@ -9,7 +9,7 @@ load_dotenv(dotenv_path)
 
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY')
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'app.db')
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'data/app.db')
     FRONTEND = os.getenv('FRONTEND')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     MEMBER_SEED_FILE = os.environ.get('MEMBER_SEED_FILE')
