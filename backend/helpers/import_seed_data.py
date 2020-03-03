@@ -3,7 +3,7 @@ from alembic import op
 import sqlalchemy as sa
 from config import Config
 
-filename = Config.SEED_FILE
+filename = Config.MEMBER_SEED_FILE
 
 columns = {
     'list_memberships': [
