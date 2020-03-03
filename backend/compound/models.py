@@ -9,7 +9,7 @@ class Compound(db.Model):
     gsk_compound_num = db.Column(db.String(30), unique=True, nullable=True)
     qtx_compound_num = db.Column(db.String(20), unique=True, nullable=True)
     pubchem_compound_id = db.Column(db.String(30), unique=True, nullable=True)
-    cas_num = db.Columm(db.String(30), unique=True, nullable=True)
+    cas_num = db.Column(db.String(30), unique=True, nullable=True)
 
     # Properties for biologists
     drug_class = db.Column(db.String(120), nullable=True)
