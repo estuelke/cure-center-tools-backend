@@ -3,9 +3,10 @@ from alembic import op
 import sqlalchemy as sa
 from config import Config
 
-filename = Config.SEED_FILE
+member_file = Config.MEMBER_SEED_FILE
+compound_file = Config.COMPOUND_SEED_FILE
 
-columns = {
+member_columns = {
     'list_memberships': [
         sa.sql.column('list_id', sa.Integer),
         sa.sql.column('member_id', sa.Integer)
@@ -59,13 +60,13 @@ columns = {
 }
 
 
-def seed_data():
-    tables = pd.read_excel(filename, sheet_name=None)
+def member_seed_data():
+    tables = pd.read_excel(member_file, sheet_name=None)
     for name, table in tables.items():
         if name == 'cure_center_profile':
             table.drop(columns=['birthday'], inplace=True)
         try:
-            db_table = sa.sql.table(name, *columns[name])
+            db_table = sa.sql.table(name, *member_columns[name])
             table.fillna('', inplace=True)
             data = table.to_dict('records')
             op.bulk_insert(
@@ -74,3 +75,26 @@ def seed_data():
             )
         except Exception as e:
             print(f"Error found {e}: Sheet: {name}")
+
+
+compound_columns = {
+    "compound": [
+        sa.sql.column('id', sa.Integer),
+        sa.sql.column('gsk_compound_num', sa.String)
+    ]
+}
+
+
+def compound_seed_data():
+    compounds = pd.read_excel(compound_file)
+    compounds = compounds.filter(['GSK Compound #'])
+    compounds = compounds.drop_duplicates()
+    compounds = compounds.rename(columns={'GSK Compound #': 'gsk_compound_num'})
+
+    db_table = sa.sql.table('compound', *compound_columns['compound'])
+    data = compounds.to_dict('records')
+    print(data)
+    op.bulk_insert(
+        db_table,
+        data
+    )
