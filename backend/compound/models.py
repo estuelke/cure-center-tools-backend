@@ -3,7 +3,8 @@ from datetime import datetime
 
 
 class Compound(db.Model):
-    __table_args__ = {"schema": "compound_log"}
+    __tablename__ = 'compound'
+    # __table_args__ = {'schema': 'compound_log'}
 
     id = db.Column(db.Integer, unique=True, primary_key=True)
 
@@ -52,7 +53,8 @@ class Compound(db.Model):
 
 
 class Batch(db.Model):
-    __table_args__ = {"schema": "compound_log"}
+    __tablename__ = 'batch'
+    # __table_args__ = {'schema': 'compound_log'}
 
     id = db.Column(db.Integer, primary_key=True)
     compound_id = db.Column(
@@ -100,7 +102,8 @@ class Batch(db.Model):
 
 
 class Vial(db.Model):
-    __table_args__ = {"schema": "compound_log"}
+    __tablename__ = 'vial'
+    # __table_args__ = {'schema': 'compound_log'}
 
     id = db.Column(db.Integer, primary_key=True)
     qura_log_num = db.Column(
@@ -122,12 +125,12 @@ class Vial(db.Model):
 
     # Material Properties
     concentration = db.Column(db.Float, nullable=True)
-    concentration_units = db.relationship('Unit', lazy=True)
+    concentration_units = db.Column(db.Integer, db.ForeignKey('unit.id'), nullable=False)
     weight = db.Column(db.Float, nullable=True)
-    weight_units = db.relationship('Unit', lazy=True)
+    weight_units = db.Column(db.Integer, db.ForeignKey('unit.id'), nullable=False)
     vehicle = db.Column(db.String(50), nullable=True, default='DMSO')
     vehicle_volume = db.Column(db.Float, nullable=True)
-    vehicle_volume_units = db.relationship('Unit', lazy=True)
+    vehicle_volume_units = db.Column(db.Integer, db.ForeignKey('unit.id'), nullable=False)
     is_solid = db.Column(db.Boolean)
 
     # Other
@@ -153,6 +156,9 @@ class Vial(db.Model):
 
 
 class Unit(db.Model):
+    __tablename__ = 'unit'
+    # __table_args__ = {'schema': 'compound_log'}
+
     id = db.Column(db.Integer, primary_key=True)
     unit = db.Column(db.String(20), nullable=False)
     classification = db.Column(db.String(20), nullable=False)
