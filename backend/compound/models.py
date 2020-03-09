@@ -14,19 +14,9 @@ class Compound(db.Model):
     pubchem_compound_id = db.Column(db.String(30), unique=True, nullable=True)
     cas_num = db.Column(db.String(30), unique=True, nullable=True)
 
-    # Properties for biologists
+    # Properties
     drug_class = db.Column(db.String(120), nullable=True)
-    analog_info = db.Column(db.String(120), nullable=True)
-    screening_info = db.Column(db.String(120), nullable=True)
-
-    # Properties for chemists
     molecular_weight = db.Column(db.Float, nullable=True)
-    compound_class = db.Column(db.String(120), nullable=True)
-    multimer_class = db.Column(db.String(30), nullable=True)
-    dimerization_position = db.Column(db.String(30), nullable=True)
-    p2_group = db.Column(db.String(20), nullable=True)
-    p3_group = db.Column(db.String(20), nullable=True)
-    p3_group_radical = db.Column(db.String(20), nullable=True)
     structure_reference_code = db.Column(db.String(30), nullable=True)
     smiles_string = db.Column(db.Text, nullable=True)
 
@@ -37,6 +27,7 @@ class Compound(db.Model):
     # Relationships
     batches = db.relationship('Batch', backref='Compound', lazy=True)
     vials = db.relationship('Vial', backref='Compound', lazy=True)
+    tags = db.relationship('Tag')
 
     def get_compound_represenation(self):
         d = {
@@ -163,3 +154,14 @@ class Unit(db.Model):
     unit = db.Column(db.String(20), nullable=False)
     classification = db.Column(db.String(20), nullable=False)
     multiplier = db.Column(db.Integer, nullable=False)
+
+
+class CompoundTag(db.Model):
+    __tablename__ = 'compound_tag'
+
+    id = db.Column(db.Integer, primary_key=True)
+    compound_id = db.Column(
+        db.Integer, db.ForeignKey('compound.id'), nullable=False
+    )
+    descriptor = db.Column(db.String(50), nullable=False)
+    tag = db.Column(db.String(50), nullable=False)
