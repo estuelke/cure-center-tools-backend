@@ -22,6 +22,7 @@ marshmallow = "*"
 flask-graphql = "*"
 graphene = "*"
 graphene-sqlalchemy = "*"
+flask-mongoengine = "*"
 
 [requires]
 python_version = "3.7"
