@@ -11,18 +11,15 @@ requests = "*"
 
 [packages]
 flask = "*"
-flask-sqlalchemy = "*"
 pandas = "*"
 python-dotenv = "*"
 flask-cors = "*"
-flask-migrate = "*"
 flask-script = "*"
 xlrd = "*"
-marshmallow = "*"
 flask-graphql = "*"
 graphene = "*"
-graphene-sqlalchemy = "*"
 flask-mongoengine = "*"
+graphene-mongo = "*"
 
 [requires]
 python_version = "3.7"
