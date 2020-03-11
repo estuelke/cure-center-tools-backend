@@ -1,14 +1,9 @@
 import pytest
-import requests
-from config import Config
 from .setup import fixtures
 from backend.schema import schema
 
-api_url = f"http://{Config.HOST}:{Config.FLASK_PORT}/graphql"
-headers = {'content-type': 'application/graphql'}
 
-
-def test_should_query_compound_api(fixtures):
+def test_should_query_compound(fixtures):
     query = """
         query CompoundQuery {
             compound {
@@ -23,14 +18,13 @@ def test_should_query_compound_api(fixtures):
         }
     }
 
-    response = requests.post(api_url, headers=headers, data=query)
-    result = response.json()
+    result = schema.execute(query)
 
-    assert response.status_code == 200
-    assert result['data'] == expected
+    assert not result.errors
+    assert result.data == expected
 
 
-def test_should_return_all_compounds_api(fixtures):
+def test_should_return_all_compounds(fixtures):
     query = """
         query CompoundsQuery {
             compounds {
@@ -48,8 +42,8 @@ def test_should_return_all_compounds_api(fixtures):
             'gskCompoundNum': '5678'
         }]
     }
-    response = requests.post(api_url, headers=headers, data=query)
-    result = response.json()
 
-    assert response.status_code == 200
-    assert result['data'] == expected
+    result = schema.execute(query)
+
+    assert not result.errors
+    assert result.data == expected
