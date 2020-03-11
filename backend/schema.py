@@ -1,13 +1,14 @@
 import graphene
-from graphene import relay
-from graphene_sqlalchemy import SQLAlchemyConnectionField
+from .compound.schema import Mutation as CompoundMutation, Query as CompoundQuery
 from .compound.schema import Compound
 
 
-class Query(graphene.ObjectType):
-    node = relay.Node.Field()
-    compound = relay.Node.Field(Compound)
-    all_compounds = SQLAlchemyConnectionField(Compound)
+class Query(CompoundQuery, graphene.ObjectType):
+    pass
 
 
-schema = graphene.Schema(query=Query)
+class Mutation(CompoundMutation, graphene.ObjectType):
+    pass
+
+
+schema = graphene.Schema(query=Query, mutation=Mutation, types=[Compound])
