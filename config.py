@@ -21,11 +21,14 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     # Mongo DB
-    MONGO_USER = os.environ.get('MONGO_USER')
-    MONGO_PASSWORD = os.environ.get('MONGO_PASSWORD')
-    MONGO_DATABASE_NAME = os.environ.get('MONGO_DATABASE_NAME')
-    MONGO_DATABASE_ROUTE = os.environ.get('MONGO_DATABASE_ROUTE')
-    MONGO_DATABASE_PORT = os.environ.get('MONGO_DATABASE_PORT')
+    MONGODB_SETTINGS = {
+        'db': os.environ.get('MONGODB_DB'),
+        'host': os.environ.get('MONGODB_HOST'),
+        'port': int(os.environ.get('MONGODB_PORT')),
+        'username': os.environ.get('MONGODB_USERNAME'),
+        'password': os.environ.get('MONGODB_PASSWORD')
+    }
+    MONGODB_ADMIN_PASSWORD = os.environ.get('MONGODB_ADMIN_PASSWORD')
 
     # Helpers
     MEMBER_SEED_FILE = os.environ.get('MEMBER_SEED_FILE')
