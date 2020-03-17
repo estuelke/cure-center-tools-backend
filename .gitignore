@@ -3,4 +3,4 @@
 *.db
 *.code-workspace
 *.xlsx
-bin*
+test/pytest.ini
