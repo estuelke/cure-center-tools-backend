@@ -1,55 +1,53 @@
-import pytest
-import requests
-from config import Config
-from .setup import fixtures
-from backend.schema import schema
-
-api_url = f"http://{Config.HOST}:{Config.FLASK_PORT}/graphql"
-headers = {'content-type': 'application/graphql'}
+import pytest  # noqa: F401
+from gql import gql
+from graphene.relay.node import to_global_id
+from .setup import backend_db, add_compounds, compound_api, single_compound  # noqa F401
+from .queries import GET_COMPOUND_BY_ID_USING_NODE, GET_ALL_COMPOUNDS, GET_FIRST_COMPOUND
 
 
-def test_should_query_compound_api(fixtures):
-    query = """
-        query CompoundQuery {
-            compound {
-                gskCompoundNum
+class TestCompoundQueryAPI:
+    def test_should_get_compound_by_id_through_node(self, backend_db, single_compound, compound_api):  # noqa F811
+        query = gql(GET_COMPOUND_BY_ID_USING_NODE)
+        global_id = to_global_id('Compound', single_compound.id)
+
+        params = {
+            "id": global_id
+        }
+
+        expected = {
+            'node': {
+                'id': global_id,
+                'gskCompoundNum': '9999'
             }
         }
-    """.strip()
 
-    expected = {
-        'compound': {
-            'gskCompoundNum': '1234'
-        }
-    }
+        result = compound_api.execute(query, variable_values=params)
+        assert result == expected
 
-    response = requests.post(api_url, headers=headers, data=query)
-    result = response.json()
+    def test_should_get_first_compound(self, backend_db, add_compounds, compound_api):  # noqa F811
+        query = gql(GET_FIRST_COMPOUND)
 
-    assert response.status_code == 200
-    assert result['data'] == expected
-
-
-def test_should_return_all_compounds_api(fixtures):
-    query = """
-        query CompoundsQuery {
-            compounds {
-                gskCompoundNum
+        expected = {
+            'compound': {
+                'gskCompoundNum': '1234'
             }
         }
-    """.strip()
 
-    expected = {
-        'compounds': [{
-            'gskCompoundNum': '1234'
-        }, {
-            'gskCompoundNum': '3456'
-        }, {
-            'gskCompoundNum': '5678'
-        }]
-    }
-    response = requests.post(api_url, headers=headers, data=query)
-    result = response.json()
+        result = compound_api.execute(query)
+        assert result == expected
 
-    assert response.status_code == 200
-    assert result['data'] == expected
+    def test_should_return_all_compounds_api(self, backend_db, add_compounds, compound_api):  # noqa F811
+        query = gql(GET_ALL_COMPOUNDS)
+
+        expected = {
+            'compounds': {
+                'edges': [
+                    {"node": {'gskCompoundNum': '1234'}},
+                    {"node": {'gskCompoundNum': '3456'}},
+                    {"node": {'gskCompoundNum': '5678'}}
+                ]
+            }
+        }
+
+        result = compound_api.execute(query)
+        assert result == expected
