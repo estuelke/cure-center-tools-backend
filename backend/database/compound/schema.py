@@ -1,7 +1,7 @@
 import graphene
 from datetime import datetime
 from graphene import InputObjectType, relay
-from graphene_mongo import MongoengineObjectType
+from graphene_mongo import MongoengineObjectType, MongoengineConnectionField
 from .models import Compound as CompoundModel
 
 
@@ -45,20 +45,38 @@ class CreateCompound(graphene.Mutation):
         return CreateCompound(compound=compound)
 
 
-class UpdateCompound():
+class UpdateCompoundInput(InputObjectType, CompoundAttribute):
     pass
+
+
+class UpdateCompound(graphene.Mutation):
+    compound = graphene.Field(lambda: Compound, description='Compound updated by this mutation.')
+
+    class Arguments:
+        id = graphene.String(required=True, description="Id of the compound.")
+        input = UpdateCompoundInput(required=True)
+
+    def mutate(self, info, id, input):
+        input['date_updated'] = datetime.utcnow()
+        # id = relay.Node.from_global_id(global_id)[1]
+
+        CompoundModel.objects(id=id).first().update(**input)
+        compound = CompoundModel.objects(id=id).first()
+
+        return UpdateCompound(compound=compound)
 
 
 class Mutation(graphene.ObjectType):
     create_compound = CreateCompound.Field()
+    update_compound = UpdateCompound.Field()
 
 
 class Query(graphene.ObjectType):
     node = relay.Node.Field()
     compound = graphene.Field(Compound)
-    compounds = graphene.List(Compound)
+    compounds = MongoengineConnectionField(Compound)
 
-    def resolve_compound(self, *args, **kwargs):
+    def resolve_compound(self, info):
         return CompoundModel.objects.first()
 
     def resolve_compounds(self, info):

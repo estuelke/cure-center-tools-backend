@@ -1,6 +1,6 @@
 import graphene
-from .compound.schema import Mutation as CompoundMutation, Query as CompoundQuery
-from .compound.schema import Compound
+from .database.compound.schema import Mutation as CompoundMutation, Query as CompoundQuery
+from .database.compound.schema import Compound
 
 
 class Query(CompoundQuery, graphene.ObjectType):
